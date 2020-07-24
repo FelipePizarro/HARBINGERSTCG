@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11200c2c22f26824a92fe6aac2c0fd42, type: 3}
+  m_Name: old_red_mage
+  m_EditorClassIdentifier: 
+  id: 0
+  exp: 0
+  level: 0
+  cardName: 23123
+  text: 11123123
+  release: 111
+  type: 11
+  race: 11
+  attack: 0
+  attack_mod: 0
+  attack_type: 1
+  attack_range: 0
+  max_hp: 0
+  hp: 0
+  effects: []
+  tags: []
+  rank: 1
+  cost: 0
+  art: {fileID: 21300000, guid: 5a566fc88f612f541acbf872c9119137, type: 3}
+  color: {r: 0, g: 0, b: 0, a: 0}
+  sign: 

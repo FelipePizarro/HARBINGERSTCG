@@ -30,6 +30,6 @@ MonoBehaviour:
   tags: []
   rank: 1
   cost: 0
-  art: {fileID: 21300000, guid: 5a566fc88f612f541acbf872c9119137, type: 3}
-  color: {r: 0, g: 0, b: 0, a: 0}
-  sign: 
+  art: {fileID: 21300000, guid: 5bc01bb8a85bc1c44982fd818a71e4b2, type: 3}
+  color: {r: 0, g: 0.23263979, b: 1, a: 1}
+  sign: 11

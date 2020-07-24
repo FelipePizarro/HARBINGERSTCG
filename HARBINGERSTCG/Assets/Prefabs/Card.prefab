@@ -571,7 +571,7 @@ MonoBehaviour:
   cCost: {fileID: 8185369227089058474}
   cAttack: {fileID: 4216379658984652072}
   cCard: {fileID: 0}
-  borderColor: {fileID: 0}
+  borderColor: {fileID: 5133649915284086558}
   isOnHAnd: 1
   player: player
 --- !u!1 &5145905480518926600

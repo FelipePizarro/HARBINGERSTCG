@@ -174,6 +174,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: ef1
+  zoneCol: 0
+  zoneRow: 0
   battleController: {fileID: 0}
 --- !u!114 &62181521
 MonoBehaviour:
@@ -434,6 +436,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: es5
+  zoneCol: 0
+  zoneRow: 4
   battleController: {fileID: 0}
 --- !u!114 &300767165
 MonoBehaviour:
@@ -593,6 +597,7 @@ RectTransform:
   - {fileID: 1338347209}
   - {fileID: 284565202}
   - {fileID: 2131433722}
+  - {fileID: 1513181755}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -746,7 +751,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pf1
-  battleController: {fileID: 0}
+  zoneCol: 0
+  zoneRow: 0
+  battleController: {fileID: 562387833}
 --- !u!114 &357977275
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -863,7 +870,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: ps2
-  battleController: {fileID: 0}
+  zoneCol: 1
+  zoneRow: 2
+  battleController: {fileID: 562387833}
 --- !u!114 &446361285
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1233,6 +1242,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: em5
+  zoneCol: 4
+  zoneRow: 1
   battleController: {fileID: 0}
 --- !u!114 &640175844
 MonoBehaviour:
@@ -1350,7 +1361,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: ps1
-  battleController: {fileID: 0}
+  zoneCol: 0
+  zoneRow: 2
+  battleController: {fileID: 562387833}
 --- !u!114 &667330732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1467,6 +1480,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: es3
+  zoneCol: 2
+  zoneRow: 2
   battleController: {fileID: 0}
 --- !u!114 &750733135
 MonoBehaviour:
@@ -1584,7 +1599,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pm1
-  battleController: {fileID: 0}
+  zoneCol: 0
+  zoneRow: 1
+  battleController: {fileID: 562387833}
 --- !u!114 &775575696
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1767,7 +1784,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pf4
-  battleController: {fileID: 0}
+  zoneCol: 3
+  zoneRow: 0
+  battleController: {fileID: 562387833}
 --- !u!114 &826189190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1989,7 +2008,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pf3
-  battleController: {fileID: 0}
+  zoneCol: 2
+  zoneRow: 0
+  battleController: {fileID: 562387833}
 --- !u!114 &917421693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2106,6 +2127,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: ef4
+  zoneCol: 3
+  zoneRow: 0
   battleController: {fileID: 0}
 --- !u!114 &928820361
 MonoBehaviour:
@@ -2223,7 +2246,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: ps4
-  battleController: {fileID: 0}
+  zoneCol: 3
+  zoneRow: 2
+  battleController: {fileID: 562387833}
 --- !u!114 &1052305368
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2340,6 +2365,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: ef5
+  zoneCol: 4
+  zoneRow: 0
   battleController: {fileID: 0}
 --- !u!114 &1055529641
 MonoBehaviour:
@@ -2540,7 +2567,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pm2
-  battleController: {fileID: 0}
+  zoneCol: 1
+  zoneRow: 1
+  battleController: {fileID: 562387833}
 --- !u!114 &1229626289
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2657,6 +2686,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: em1
+  zoneCol: 0
+  zoneRow: 1
   battleController: {fileID: 0}
 --- !u!114 &1235805137
 MonoBehaviour:
@@ -2902,7 +2933,9 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7941698936204585867, guid: e571220887d87bd4f9acd30262517405, type: 3}
+    - {fileID: -8734635900412272300, guid: e571220887d87bd4f9acd30262517405, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e571220887d87bd4f9acd30262517405, type: 3}
 --- !u!1 &1301620345
 GameObject:
@@ -2958,6 +2991,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: es1
+  zoneCol: 0
+  zoneRow: 2
   battleController: {fileID: 0}
 --- !u!114 &1301620348
 MonoBehaviour:
@@ -3113,7 +3148,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: ps3
-  battleController: {fileID: 0}
+  zoneCol: 2
+  zoneRow: 2
+  battleController: {fileID: 562387833}
 --- !u!114 &1420402663
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3310,7 +3347,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pm5
-  battleController: {fileID: 0}
+  zoneCol: 4
+  zoneRow: 1
+  battleController: {fileID: 562387833}
 --- !u!114 &1448880170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3555,8 +3594,143 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7941698936204585867, guid: e571220887d87bd4f9acd30262517405, type: 3}
+    - {fileID: -8734635900412272300, guid: e571220887d87bd4f9acd30262517405, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e571220887d87bd4f9acd30262517405, type: 3}
+--- !u!1 &1513181754
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1513181755}
+  - component: {fileID: 1513181758}
+  - component: {fileID: 1513181757}
+  - component: {fileID: 1513181756}
+  m_Layer: 5
+  m_Name: Button
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1513181755
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513181754}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1983715042}
+  m_Father: {fileID: 302286957}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 283, y: 23}
+  m_SizeDelta: {x: 160, y: 30}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1513181756
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513181754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Navigation:
+    m_Mode: 3
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 1513181757}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 562387834}
+        m_MethodName: finishTurn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
+      Culture=neutral, PublicKeyToken=null
+--- !u!114 &1513181757
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513181754}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1513181758
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1513181754}
+  m_CullTransparentMesh: 0
 --- !u!1 &1533475217
 GameObject:
   m_ObjectHideFlags: 0
@@ -3722,7 +3896,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pm4
-  battleController: {fileID: 0}
+  zoneCol: 3
+  zoneRow: 1
+  battleController: {fileID: 562387833}
 --- !u!114 &1641350357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3839,7 +4015,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pm3
-  battleController: {fileID: 0}
+  zoneCol: 2
+  zoneRow: 1
+  battleController: {fileID: 562387833}
 --- !u!114 &1665877939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3956,6 +4134,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: es4
+  zoneCol: 3
+  zoneRow: 2
   battleController: {fileID: 0}
 --- !u!114 &1669186171
 MonoBehaviour:
@@ -4178,6 +4358,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: ef2
+  zoneCol: 1
+  zoneRow: 0
   battleController: {fileID: 0}
 --- !u!114 &1697349452
 MonoBehaviour:
@@ -4295,6 +4477,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: em4
+  zoneCol: 3
+  zoneRow: 1
   battleController: {fileID: 0}
 --- !u!114 &1737433044
 MonoBehaviour:
@@ -4412,6 +4596,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: es2
+  zoneCol: 1
+  zoneRow: 2
   battleController: {fileID: 0}
 --- !u!114 &1760942200
 MonoBehaviour:
@@ -4529,6 +4715,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: ef3
+  zoneCol: 2
+  zoneRow: 0
   battleController: {fileID: 0}
 --- !u!114 &1793759464
 MonoBehaviour:
@@ -4652,6 +4840,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: em3
+  zoneCol: 2
+  zoneRow: 1
   battleController: {fileID: 0}
 --- !u!114 &1855016423
 MonoBehaviour:
@@ -4769,7 +4959,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pf5
-  battleController: {fileID: 0}
+  zoneCol: 4
+  zoneRow: 0
+  battleController: {fileID: 562387833}
 --- !u!114 &1869881302
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4886,7 +5078,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: ps5
-  battleController: {fileID: 0}
+  zoneCol: 4
+  zoneRow: 2
+  battleController: {fileID: 562387833}
 --- !u!114 &1891094771
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5003,7 +5197,9 @@ MonoBehaviour:
   zone: player
   hasCard: 0
   zoneId: pf2
-  battleController: {fileID: 0}
+  zoneCol: 1
+  zoneRow: 0
+  battleController: {fileID: 562387833}
 --- !u!114 &1927762977
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5120,6 +5316,8 @@ MonoBehaviour:
   zone: enemy
   hasCard: 0
   zoneId: em2
+  zoneCol: 1
+  zoneRow: 1
   battleController: {fileID: 0}
 --- !u!114 &1969757362
 MonoBehaviour:
@@ -5183,6 +5381,85 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
+--- !u!1 &1983715041
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1983715042}
+  - component: {fileID: 1983715044}
+  - component: {fileID: 1983715043}
+  m_Layer: 5
+  m_Name: Text
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1983715042
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983715041}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1513181755}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1983715043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983715041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_FontData:
+    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_FontSize: 14
+    m_FontStyle: 0
+    m_BestFit: 0
+    m_MinSize: 10
+    m_MaxSize: 40
+    m_Alignment: 4
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Finish turn
+--- !u!222 &1983715044
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1983715041}
+  m_CullTransparentMesh: 0
 --- !u!1 &2131433721
 GameObject:
   m_ObjectHideFlags: 0

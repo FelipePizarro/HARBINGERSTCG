@@ -34,7 +34,7 @@ public class CardView : MonoBehaviour
             cCard = card;
             cName.text = card.cardName;
             cSkill.text = card.text;
-            cHealth.text = card.max_hp.ToString();
+            cHealth.text = card.hp.ToString() + " / " + card.max_hp.ToString();
             cCost.text = card.cost.ToString();
             cAttack.text = card.attack.ToString();
         }

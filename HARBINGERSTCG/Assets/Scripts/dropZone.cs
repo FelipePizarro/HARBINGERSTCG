@@ -7,6 +7,16 @@ public class dropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 {
     public string zone;
     public bool hasCard;
+    public string zoneId;
+    public int zoneCol;
+    public int zoneRow;
+    public GameObject battleController;
+
+    void Start()
+    {
+        battleController = GameObject.Find("GameController");
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
     }
@@ -17,12 +27,13 @@ public class dropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
     public void OnDrop(PointerEventData eventData)
     {
         Draggable d = eventData.pointerDrag.GetComponent<Draggable>();
-        Debug.Log(d.name + " dropped");
+
         if (d != null && d.GetComponent<CardView>().isOnHAnd && d.GetComponent<CardView>().player == zone && !hasCard)
-            {
+        {
             d.parentToReturn = this.transform;
             d.GetComponent<CardView>().isOnHAnd = false;
             hasCard = true;
+            battleController.GetComponent<BattleController>().addCardToField()
         }
     }
 }

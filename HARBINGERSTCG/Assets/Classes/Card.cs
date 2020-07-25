@@ -20,13 +20,15 @@ using UnityEngine.UI;
       public  int attack_range;
       public  int max_hp;
       public  int hp;
-      public  string[] effects;
+      public  Skill[] effects;
       public  string[] tags;
       public  string rank;
       public int cost;
       public Sprite art;
       public Color color;
       public string sign;
+      public int[] boardPosition;
+      public string currentZone;
     }
 
 

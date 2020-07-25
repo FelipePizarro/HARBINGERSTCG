@@ -25,7 +25,6 @@ public class CardView : MonoBehaviour
 
     public void LoadCard(Card card)
     {
-
         if(card)
         {   
             borderColor.sprite = null;

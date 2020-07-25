@@ -15,21 +15,21 @@ MonoBehaviour:
   id: 0
   exp: 0
   level: 0
-  cardName: 23123
+  cardName: Red Mage
   text: 11123123
   release: 111
   type: 11
   race: 11
-  attack: 0
-  attack_mod: 0
-  attack_type: 1
-  attack_range: 0
-  max_hp: 0
-  hp: 0
+  attack: 1
+  attack_mod: 1
+  attack_type: mag
+  attack_range: 1
+  max_hp: 10
+  hp: 10
   effects: []
   tags: []
   rank: 1
   cost: 0
   art: {fileID: 21300000, guid: 5bc01bb8a85bc1c44982fd818a71e4b2, type: 3}
   color: {r: 0, g: 0.23263979, b: 1, a: 1}
-  sign: 11
+  sign: enchanter

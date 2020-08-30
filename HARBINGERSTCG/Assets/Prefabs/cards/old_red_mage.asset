@@ -20,16 +20,17 @@ MonoBehaviour:
   release: 111
   type: 11
   race: 11
-  attack: 1
+  attack: 10
   attack_mod: 1
   attack_type: mag
   attack_range: 1
   max_hp: 10
   hp: 10
-  effects: []
   tags: []
   rank: 1
   cost: 0
   art: {fileID: 21300000, guid: 5bc01bb8a85bc1c44982fd818a71e4b2, type: 3}
   color: {r: 0, g: 0.23263979, b: 1, a: 1}
   sign: enchanter
+  boardPosition: 
+  currentZone: 

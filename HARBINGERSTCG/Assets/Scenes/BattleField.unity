@@ -176,7 +176,7 @@ MonoBehaviour:
   zoneId: ef1
   zoneCol: 0
   zoneRow: 0
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &62181521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -344,6 +344,133 @@ MonoBehaviour:
   m_Spacing: {x: 10, y: 0}
   m_Constraint: 2
   m_ConstraintCount: 1
+--- !u!1 &262871949
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 262871950}
+  - component: {fileID: 262871954}
+  - component: {fileID: 262871953}
+  - component: {fileID: 262871952}
+  - component: {fileID: 262871951}
+  m_Layer: 8
+  m_Name: hand_enemy
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &262871950
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262871949}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 302286957}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0.24263293}
+  m_AnchoredPosition: {x: -0.024993896, y: 524}
+  m_SizeDelta: {x: -0.1, y: -44.1}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &262871951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262871949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 4
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 80, y: 100}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
+--- !u!114 &262871952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262871949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1316c00cb7c425d479e0a2d8d71da4a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cardPrefab: {fileID: 5133649916970675412, guid: e571220887d87bd4f9acd30262517405,
+    type: 3}
+  handCanvas: {fileID: 262871949}
+  myDeck: []
+  player: enemy
+  cardList:
+  - basic_warrior.asset
+  - basic_warrior.asset
+  - old_red_mage.asset
+  - old_red_mage.asset
+  - old_red_mage.asset
+  - basic_warrior.asset
+  - basic_warrior.asset
+  - basic_warrior.asset
+--- !u!114 &262871953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262871949}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_RaycastTarget: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+    m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
+      Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &262871954
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 262871949}
+  m_CullTransparentMesh: 0
 --- !u!1 &284565201
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,7 +565,7 @@ MonoBehaviour:
   zoneId: es5
   zoneCol: 0
   zoneRow: 4
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &300767165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -597,6 +724,7 @@ RectTransform:
   - {fileID: 1338347209}
   - {fileID: 284565202}
   - {fileID: 2131433722}
+  - {fileID: 262871950}
   - {fileID: 1513181755}
   m_Father: {fileID: 0}
   m_RootOrder: 4
@@ -1069,6 +1197,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c6b6d6aba9d56254a915dcc9491ffab6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CardGo: {fileID: 0}
+  player_hand: {fileID: 2131433721}
+  enemy_hand: {fileID: 262871949}
+  isPlayerTurn: 0
+  turn_button: {fileID: 1513181756}
 --- !u!4 &562387835
 Transform:
   m_ObjectHideFlags: 0
@@ -1244,7 +1377,7 @@ MonoBehaviour:
   zoneId: em5
   zoneCol: 4
   zoneRow: 1
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &640175844
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1482,7 +1615,7 @@ MonoBehaviour:
   zoneId: es3
   zoneCol: 2
   zoneRow: 2
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &750733135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2129,7 +2262,7 @@ MonoBehaviour:
   zoneId: ef4
   zoneCol: 3
   zoneRow: 0
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &928820361
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2367,7 +2500,7 @@ MonoBehaviour:
   zoneId: ef5
   zoneCol: 4
   zoneRow: 0
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1055529641
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2688,7 +2821,7 @@ MonoBehaviour:
   zoneId: em1
   zoneCol: 0
   zoneRow: 1
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1235805137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2993,7 +3126,7 @@ MonoBehaviour:
   zoneId: es1
   zoneCol: 0
   zoneRow: 2
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1301620348
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3611,7 +3744,7 @@ GameObject:
   - component: {fileID: 1513181757}
   - component: {fileID: 1513181756}
   m_Layer: 5
-  m_Name: Button
+  m_Name: turn_button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3630,7 +3763,7 @@ RectTransform:
   m_Children:
   - {fileID: 1983715042}
   m_Father: {fileID: 302286957}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -4136,7 +4269,7 @@ MonoBehaviour:
   zoneId: es4
   zoneCol: 3
   zoneRow: 2
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1669186171
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4360,7 +4493,7 @@ MonoBehaviour:
   zoneId: ef2
   zoneCol: 1
   zoneRow: 0
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1697349452
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4479,7 +4612,7 @@ MonoBehaviour:
   zoneId: em4
   zoneCol: 3
   zoneRow: 1
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1737433044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4598,7 +4731,7 @@ MonoBehaviour:
   zoneId: es2
   zoneCol: 1
   zoneRow: 2
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1760942200
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4717,7 +4850,7 @@ MonoBehaviour:
   zoneId: ef3
   zoneCol: 2
   zoneRow: 0
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1793759464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4842,7 +4975,7 @@ MonoBehaviour:
   zoneId: em3
   zoneCol: 2
   zoneRow: 1
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1855016423
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5318,7 +5451,7 @@ MonoBehaviour:
   zoneId: em2
   zoneCol: 1
   zoneRow: 1
-  battleController: {fileID: 0}
+  battleController: {fileID: 562387833}
 --- !u!114 &1969757362
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5474,7 +5607,7 @@ GameObject:
   - component: {fileID: 2131433726}
   - component: {fileID: 2131433723}
   m_Layer: 8
-  m_Name: hand
+  m_Name: hand_player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5577,6 +5710,7 @@ MonoBehaviour:
     type: 3}
   handCanvas: {fileID: 2131433721}
   myDeck: []
+  player: player
   cardList:
   - basic_warrior.asset
   - basic_warrior.asset

@@ -20,8 +20,8 @@ MonoBehaviour:
   release: 12
   type: 2
   race: 12
-  attack: 1
-  attack_mod: 2
+  attack: 3
+  attack_mod: 1
   attack_type: ph
   attack_range: 1
   max_hp: 12

@@ -10,16 +10,13 @@ public class PlayerController : MonoBehaviour
     public GameObject cardPrefab;
     public GameObject handCanvas;
     public List<Card> myDeck = null;
+    public string player;
     public List<string> cardList = new List<string>() { "basic_warrior.asset", "basic_warrior.asset", "old_red_mage.asset", "old_red_mage.asset", "old_red_mage.asset", "basic_warrior.asset", "basic_warrior.asset", "basic_warrior.asset" };
     // public List<CardView> MyCards = new List<CardView>();
     void Start()
     {
-        loadDeck(cardList);
         ShuffleDeck();
-        drawCard();
-        drawCard();
-        drawCard();
-        drawCard();
+        // drawCard(4);
     }
 
     // Update is called once per frame
@@ -31,24 +28,21 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void loadDeck(List<string> cardList)
+    public void loadDeck()
     {
         foreach (string card in cardList)
         {
             Card c = AssetDatabase.LoadAssetAtPath<Card>("Assets/Prefabs/cards/" + card);
-            myDeck.Add(c);
+            Card newCard = c;
+            myDeck.Add(newCard);
         }
-    }
-
-    void drawCard()
-    {
-        addCardToHand(myDeck[0]);
-        myDeck.RemoveAt(0);
     }
 
     void addCardToHand(Card card)
     {
-        Card c = card;
+        Card c = new Card(card.id, card.exp, card.level, card.cardName, card.text, card.release, card.type, card.race, card.attack,
+            card.attack_mod, card.type, card.attack_range, card.max_hp, card.hp, card.effects, card.tags, card.rank, card.cost, card.art,
+            card.color, card.sign, card.currentZone, this.player);
 
         GameObject newCard = Instantiate(cardPrefab) as GameObject;
         newCard.GetComponent<CardView>().LoadCard(c);
@@ -58,7 +52,16 @@ public class PlayerController : MonoBehaviour
         newCard.transform.localRotation = handCanvas.transform.localRotation;
     }
 
-     void ShuffleDeck()
+    public void drawCard(int qty)
+    {
+        for (int i = 0; i < qty; i++)
+        {
+            addCardToHand(myDeck[0]);
+            myDeck.RemoveAt(0);
+        }
+    }
+
+    void ShuffleDeck()
     {
         for (int i = 0; i < myDeck.Count; i++)
         {

@@ -15,7 +15,7 @@ public class CardView : MonoBehaviour
     public Card cCard;
     public Image borderColor;
     public bool isOnHAnd = true;
-    public string player = "player";
+    public string player;
 
 
     // Start is called before the first frame update
@@ -25,6 +25,8 @@ public class CardView : MonoBehaviour
 
     public void LoadCard(Card card)
     {
+        Debug.Log("ply =" + card.player);
+
         if(card)
         {   
             borderColor.sprite = null;
@@ -37,6 +39,7 @@ public class CardView : MonoBehaviour
             cHealth.text = card.hp.ToString() + " / " + card.max_hp.ToString();
             cCost.text = card.cost.ToString();
             cAttack.text = card.attack.ToString();
+            player = card.player;
         }
     }
 }

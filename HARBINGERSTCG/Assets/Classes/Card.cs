@@ -30,10 +30,11 @@ using UnityEngine.UI;
       public int[] boardPosition;
       public string currentZone;
       public string player;
+      public bool isDefending;
     public Card(int id, int exp, int level, string cardName, string text, string release, string type, string race, int attack,
         int attack_mod, string attack_type, int attack_range, int max_hp, int hp, Skill[] effects, string[] tags, string rank,
         int cost, Sprite art, Color color, string sign, string current_zone, string player)
-    {
+        {
         this.id = id;
         this.exp = exp;
         this.level = level;
@@ -57,7 +58,8 @@ using UnityEngine.UI;
         this.sign = sign;
         this.currentZone = current_zone;
         this.player = player;
-    }
+        isDefending = true;
+        }
         
     }
 

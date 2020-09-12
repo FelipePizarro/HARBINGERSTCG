@@ -6,12 +6,18 @@ using UnityEngine.UI;
 
 public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IPointerClickHandler
 {
+    // TODO: makes another draggable for enemy
+
     public Transform parentToReturn = null;
     public GameObject view;
     GameObject placeholder = null;
+    public string playerTurn;
+    private GameObject battleCtrl;
+    private bool isOnHand;
 
     public void Start()
     {
+        battleCtrl = GameObject.Find("GameController");
       //  view = GameObject.Find("CardOverviewGO");
       //  parentToReturn = GameObject.Find("hand").transform;
     }
@@ -19,8 +25,8 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnBeginDrag(PointerEventData eventData)
     {
         // Debug.Log("... bgin draging");
-        bool onhand = gameObject.GetComponent<CardView>().isOnHAnd;
-        if (onhand == true)
+        isOnHand = gameObject.GetComponent<CardView>().isOnHAnd;
+        if (isOnHand == true && isOnHand == true)
         {
             placeholder = new GameObject();
             placeholder.transform.SetParent(this.transform.parent);
@@ -42,8 +48,7 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
     public void OnDrag(PointerEventData eventData)
     {
         // Debug.Log("...draging");
-        bool onhand = gameObject.GetComponent<CardView>().isOnHAnd;
-        if (onhand == true)
+        if (isOnHand == true && isOnHand == true)
         {
             this.transform.position = eventData.position;
         }
@@ -51,10 +56,9 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        // Debug.Log("...end draging");
-        try
+
+        if (isOnHand == true && isOnHand == true)
         {
-            bool onhand = gameObject.GetComponent<CardView>().isOnHAnd;
             this.transform.SetParent(parentToReturn);
             this.transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
             GetComponent<CanvasGroup>().blocksRaycasts = true;
@@ -63,12 +67,6 @@ public class Draggable : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDra
             Destroy(placeholder);
 
         }
-        catch (System.Exception)
-        {
-
-            Debug.Log("not draggable");
-        }
-      
     }
 
     public void OnPointerClick(PointerEventData eventData)

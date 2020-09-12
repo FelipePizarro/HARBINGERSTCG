@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,31 +13,51 @@ public class BattleController : MonoBehaviour
     public GameObject enemy_hand;
     public bool isPlayerTurn = false;
     public Button turn_button;
+    public GameObject gameMessage;
 
+    // battle ->
+    public int[] selectedAttacker = {};
+    public int[] selectedDefender = {};
+    
     void Start()
     {
-        // init player hand
-        // player_hand.SetActive(true);
         turn_button.interactable = false;
         player_hand.GetComponent<PlayerController>().loadDeck();
         enemy_hand.GetComponent<PlayerController>().loadDeck();
+        hideMessageGame();
+        
         initGame();
     }
-
+    
     public void addCardToField(int[] place, GameObject card, string player)
     {
-        if(player == "player")
+        try
         {
-            playerField[place[0], place[1]] = card;
-            card.GetComponent<Card>().boardPosition = place;
-            // check battleCry
-        } else if(player == "enemy")
+            if (player == "player")
+            {
+                playerField[place[0], place[1]] = card;
+                card.GetComponent<CardView>().cCard.boardPosition = place;
+                card.GetComponent<CardView>().EnableActionButtons();
+
+                // check battleCry
+            }
+            else if (player == "enemy")
+            {
+                enemyField[place[0], place[1]] = card;
+                card.GetComponent<CardView>().cCard.boardPosition = place;
+                card.GetComponent<CardView>().EnableActionButtons();
+
+                // check battleCry
+            }
+            card.GetComponent<CardView>().cCard.isDefending = true;
+        }
+        catch (System.Exception e)
         {
-            enemyField[place[0], place[1]] = card;
-            card.GetComponent<Card>().boardPosition = place;
-            // check battleCry
+            Debug.Log(e);
+            throw;
         }
     }
+
 
     private void initGame()
     {
@@ -49,15 +70,21 @@ public class BattleController : MonoBehaviour
         }
         catch (System.Exception e)
         {
-            Debug.Log("error");
             Debug.Log(e);
             throw;
         }
     }
+
+    public void setPlayersOder()
+    {
+        // TODO
+    }
+
+
     private void startPlayerTurn()
     {
         //  turn_button.interactable = true;
-        Debug.Log("player turn");
+        StartCoroutine(showMessageGame("Player turn"));
         turn_button.GetComponentInChildren<Text>().text = "End turn";
         turn_button.interactable = true;
         isPlayerTurn = true;
@@ -66,14 +93,13 @@ public class BattleController : MonoBehaviour
 
     private void startEnemyTurn()
     {
-        Debug.Log("enemy turn");
+        StartCoroutine(showMessageGame("Enemy turn"));
         turn_button.interactable = false;
         turn_button.GetComponentInChildren<Text>().text = "Enemy turn";
         isPlayerTurn = false;
         // player_hand.SetActive(false);
         enemy_hand.GetComponent<PlayerController>().drawCard(1);
-        StartCoroutine(waiting());
-        
+        StartCoroutine(waiting());        
     }
 
     private IEnumerator waiting()
@@ -98,9 +124,36 @@ public class BattleController : MonoBehaviour
         if (isPlayerTurn == true)
         {
             startEnemyTurn();
-        } else
+        }
+        else
         {
             startPlayerTurn();
         }
+    }
+
+    public IEnumerator showMessageGame(string msg)
+    {
+        gameMessage.GetComponentInChildren<TextMeshProUGUI>().text = msg;
+        gameMessage.SetActive(true);
+        yield return new WaitForSeconds(5);
+        hideMessageGame();
+    }
+
+    public void hideMessageGame()
+    {
+        gameMessage.SetActive(false);
+    }
+
+    public void attackToUnit()
+    {
+        playerField[selectedAttacker[0], selectedAttacker[1]].GetComponent<CardView>().cCard.hp -= enemyField[selectedDefender[0], selectedDefender[1]].GetComponent<CardView>().cCard.attack;
+        enemyField[selectedDefender[0], selectedDefender[1]].GetComponent<CardView>().cCard.hp -= playerField[selectedAttacker[0], selectedAttacker[1]].GetComponent<CardView>().cCard.attack;
+
+        playerField[selectedAttacker[0], selectedAttacker[1]].GetComponent<CardView>().cCard.isDefending = false;
+        playerField[selectedAttacker[0], selectedAttacker[1]].GetComponent<CardView>().updateCard();
+        enemyField[selectedDefender[0], selectedDefender[1]].GetComponent<CardView>().updateCard();
+
+        selectedDefender = new int[0];
+        selectedAttacker = new int[0];
     }
 }

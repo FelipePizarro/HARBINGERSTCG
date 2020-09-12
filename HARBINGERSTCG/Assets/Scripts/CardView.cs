@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
+using UnityEngine.EventSystems;
 
-public class CardView : MonoBehaviour
+public class CardView : MonoBehaviour, IPointerClickHandler
 {
     public Image cardBg;
     public Text cName;
@@ -17,16 +18,21 @@ public class CardView : MonoBehaviour
     public bool isOnHAnd = true;
     public string player;
 
+    //Actions buttons group
+    public GameObject actionGroup;
+    public GameObject fieldButtons;
+    public Button ShowActionsButton;
+    private GameObject gameCtrl;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        gameCtrl = GameObject.Find("GameController");
     }
 
     public void LoadCard(Card card)
     {
-        Debug.Log("ply =" + card.player);
-
         if(card)
         {   
             borderColor.sprite = null;
@@ -40,6 +46,65 @@ public class CardView : MonoBehaviour
             cCost.text = card.cost.ToString();
             cAttack.text = card.attack.ToString();
             player = card.player;
+        }
+    }
+
+    public void updateCard()
+    {
+        if (cCard)
+        {
+            cSkill.text = cCard.text;
+            cHealth.text = cCard.hp.ToString() + " / " + cCard.max_hp.ToString();
+            cCost.text = cCard.cost.ToString();
+            cAttack.text = cCard.attack.ToString();
+        }
+    }
+
+    public void EnableActionButtons()
+    {
+        fieldButtons.SetActive(true);
+    }
+
+    public void DisplayActions(bool alt)
+    {
+        if (!isOnHAnd && gameCtrl.GetComponent<BattleController>().isPlayerTurn)
+        {         
+           actionGroup.SetActive(alt);
+        }
+    }
+
+    public void attackAction()
+    {
+        try
+        {
+           StartCoroutine(gameCtrl.GetComponent<BattleController>().showMessageGame("select enemy target"));
+           gameCtrl.GetComponent<BattleController>().selectedAttacker = cCard.boardPosition;
+           actionGroup.SetActive(false);
+        }
+        catch (System.Exception e)
+        {
+            Debug.Log(e);
+            throw;
+        }
+    }
+    public void defendAction()
+    {
+
+    }
+    public void skillAction()
+    {
+
+    }
+    public void inspectAction()
+    {
+
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (!isOnHAnd)
+        {
+            Debug.Log(cCard.name + " on position: " + cCard.boardPosition);
         }
     }
 }

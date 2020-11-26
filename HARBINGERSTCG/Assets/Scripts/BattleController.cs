@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,8 @@ public class BattleController : MonoBehaviour
     public bool isPlayerTurn = false;
     public Button turn_button;
     public GameObject gameMessage;
+    public List<Card> playerGraveyard = new List<Card>();
+    public List<Card> enemyGraveyard = new List<Card>();
 
     // battle ->
     public int[] selectedAttacker = {};
@@ -155,5 +158,25 @@ public class BattleController : MonoBehaviour
 
         selectedDefender = new int[0];
         selectedAttacker = new int[0];
+    }
+
+    public void sendToGraveyard(int[] card_pos, string player)
+    {
+        if(player == "player")
+        {
+            string card_name = playerField[card_pos[0], card_pos[1]].GetComponent<CardView>().cCard.cardName;
+            playerField[card_pos[0], card_pos[1]] = null;
+            Card c = AssetDatabase.LoadAssetAtPath<Card>("Assets/Prefabs/cards/" + card_name);
+            Card card = c;
+            playerGraveyard.Add(c);
+        } else
+        {
+            string card_name = enemyField[card_pos[0], card_pos[1]].GetComponent<CardView>().cCard.cardName;
+            enemyField[card_pos[0], card_pos[1]] = null;
+            Card c = AssetDatabase.LoadAssetAtPath<Card>("Assets/Prefabs/cards/" + card_name);
+            Card card = c;
+            enemyGraveyard.Add(c);
+        }
+    
     }
 }

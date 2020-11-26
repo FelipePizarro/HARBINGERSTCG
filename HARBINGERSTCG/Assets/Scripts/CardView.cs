@@ -57,6 +57,18 @@ public class CardView : MonoBehaviour, IPointerClickHandler
             cHealth.text = cCard.hp.ToString() + " / " + cCard.max_hp.ToString();
             cCost.text = cCard.cost.ToString();
             cAttack.text = cCard.attack.ToString();
+            
+            if (cCard.hp <= 0) {
+                try
+                {
+                    gameCtrl.GetComponent<BattleController>().sendToGraveyard(cCard.boardPosition, player);
+                    Destroy(gameObject);
+                }
+                catch (System.Exception e)
+                {
+                    Debug.Log(e);
+                }
+            }
         }
     }
 

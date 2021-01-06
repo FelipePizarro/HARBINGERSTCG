@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Mirror;
 
-public class dropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
+public class dropZone : NetworkBehaviour, IDropHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public string zone;
     public bool hasCard;
@@ -14,7 +15,7 @@ public class dropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
 
     void Start()
     {
-       battleController = GameObject.Find("GameController");
+       battleController = GameObject.Find("BattleController");
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -29,7 +30,10 @@ public class dropZone : MonoBehaviour, IDropHandler, IPointerEnterHandler, IPoin
         Draggable d = eventData.pointerDrag.GetComponent<Draggable>();
         // Debug.Log(d.gameObject.GetComponent<CardView>().cName.text);
 
-        if (d != null && d.GetComponent<CardView>().isOnHAnd && d.GetComponent<CardView>().player == zone && !hasCard && battleController.GetComponent<BattleController>().isPlayerTurn == true)
+        if (d != null && d.GetComponent<CardView>().isOnHAnd && 
+            hasAuthority &&
+            !hasCard
+            )
         {
             d.parentToReturn = this.transform;
             d.GetComponent<CardView>().isOnHAnd = false;

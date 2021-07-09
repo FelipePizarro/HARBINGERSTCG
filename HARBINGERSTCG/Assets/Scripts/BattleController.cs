@@ -9,8 +9,9 @@ using Mirror;
 
 public class BattleController : NetworkBehaviour
 {
-    public GameObject[,] playerField = new GameObject[5, 3];
-    public GameObject[,] enemyField = new GameObject[5, 3];
+    public static My_PlayerController playerController;
+    public GameObject[,] playerField = new GameObject[3, 3];
+    public GameObject[,] enemyField = new GameObject[3, 3];
     public GameObject cardPrefab;
     public GameObject CardGo;
     public GameObject player_hand;
@@ -22,45 +23,63 @@ public class BattleController : NetworkBehaviour
     public GameObject gameMessage;
     public List<Card> playerGraveyard = new List<Card>();
     public List<Card> enemyGraveyard = new List<Card>();
-    public List<string> cardList = new List<string>() { "basic_warrior", "basic_warrior", "old_red_mage", "old_red_mage", "old_red_mage", "basic_warrior", "basic_warrior", "basic_warrior" };
+    public List<string> cardList = new List<string>() {};
     public List<Card> playerDeck = new List<Card>();
     public List<Card> enemyDeck = new List<Card>();
+    [SyncVar]
+    public My_PlayerController player1;
+    [SyncVar]
+    public My_PlayerController player2;
 
     // battle ->
-    public int[] selectedAttacker = {};
-    public int[] selectedDefender = {};
-    public int[] selectedTarget = {};
     public string selectedTargetPlayer;
     public bool listenForTarget = false;
-    public bool isTargetSelected = false;
+    public bool isTargetSelected = false; 
     public GameObject target;
-    public string targetType = "";
-    public GameObject player1 = null;
-    public GameObject player2 = null;
 
 
+    public int playerCount = 0;
+    public GameObject cardDealer;
+    public int CurrentAttackerX = 4;
+    public int CurrentAttackerY = 4;
+    public int CurrentTargetX = 4;
+    public int CurrentTargetY = 4;
+
+    [SyncVar]
+    public SyncList<string> currentSpell = new SyncList<string>();
+
+
+    public int DiceRoll = 0;
+    [HideInInspector] public bool isOurTurn = false;
+
+    [SyncVar]
+    public string targetType;
+    [SyncVar]
+    public string currentAction;
+
+    [SyncVar]
+    public bool hostStarts = false;
+
+    [SyncVar]
+    public GameObject spellcard;
     public override void OnStartServer()
     {
         base.OnStartServer();
         Debug.Log("server started");
         loadDeck();
-
-     //   drawCard(3);
-
+     // drawCard(3);
     }
 
-    public void checkPlayers(GameObject player)
+    [Command(ignoreAuthority = true)]
+    public void CmdsetCurrentAction(string action)
     {
-        if(player1 == null)
-        {
-            player1 = player;
-            Debug.Log("added player 1");
-        } else
-        {
-            player2 = player;
-            Debug.Log("added player 2");
-            RpcInitGame();
-        }
+        currentAction = action;
+    }
+
+    [Command(ignoreAuthority = true)]
+    public void CmdsetSpellGO(GameObject spell)
+    {
+        spellcard = spell;
     }
 
     public void loadDeck()
@@ -69,74 +88,64 @@ public class BattleController : NetworkBehaviour
         {
             try
             {
- 
                 Card c = Resources.Load<Card>(card_name);
                 Card newCard = c;
                 Debug.Log(newCard);
                 playerDeck.Add(newCard);
-
             }
             catch (System.Exception)
             {
-
                 throw;
             }
         }
     }
-
-    void addCardToHand(Card card, bool isplayer)
-    {
-        Card c = new Card(card.id, card.exp, card.level, card.cardName, card.text, card.release, card.type, card.race, card.attack,
-            card.attack_mod, card.type, card.attack_range, card.max_hp, card.hp, card.tags, card.rank, card.cost, card.art,
-            card.color, card.sign, card.currentZone, "", card.onSummon);
-
-        GameObject newCard = Instantiate(cardPrefab) as GameObject;
-        newCard.GetComponent<CardView>().
-            LoadCard(c);
-
-        if(isplayer)
+    public void startGame(bool hostFirst)
+    {    
+       // My_PlayerController player = My_PlayerController.localPlayer; // to set thing on current player
+        isOurTurn = true;
+        turn_button.gameObject.SetActive(true);
+        if(!hostFirst)
         {
-            newCard.transform.SetParent(player_hand.transform);
-        }
-        else
+            CmdEndTurn();
+            //playerController.CmdDrawCard(1);
+            return;
+        } else
         {
-            newCard.transform.SetParent(enemy_hand.transform);
+            NetworkIdentity netID = NetworkClient.connection.identity;
+            My_PlayerController p = netID.GetComponent<My_PlayerController>();
+
+            p.CmdDrawCard(1);
         }
     }
 
-    [Command(ignoreAuthority = true)]
-    public void CmddrawCard(int qty, bool player)
+    public void registerPlayers(GameObject player)
     {
-        if(playerDeck.Count > 0)
+        playerController = player.GetComponent<My_PlayerController>();
+        if (player1 == null)
         {
-            for (int i = 0; i < qty; i++)
-            {
-                addCardToHand(playerDeck[0], player);
-                playerDeck.RemoveAt(0);
-            }
-
+            Debug.Log("registered player 1");
+            player1 = player.GetComponent<My_PlayerController>();
+            player1.tag = "player1";
+            playerCount++;
         }
         else
         {
-            Debug.Log("no more cards");
+            Debug.Log("registered player 2");
+            player2 = player.GetComponent<My_PlayerController>();
+            player2.tag = "player2";
+            playerCount++;
         }
     }
 
     void Start()
     {
-      
-        turn_button.interactable = false;
-      //  player_hand.GetComponent<PlayerController>().loadDeck();
-      //  enemy_hand.GetComponent<PlayerController>().loadDeck();
         hideMessageGame();
-      //  target = new GameObject();
-        initGame();
+        turn_button.gameObject.SetActive(isOurTurn);
     } 
 
     public void addCardToField(int[] place, GameObject card, string player)
     {
         listenForTarget = false;
-        selectedTarget = null;
         selectedTargetPlayer = "";
 
         try
@@ -170,41 +179,10 @@ public class BattleController : NetworkBehaviour
         }
     }
 
-    [ClientRpc]
-    public void RpcInitGame()
-    {
-        player1.GetComponent<My_PlayerController>().askForCards();
-        player2.GetComponent<My_PlayerController>().askForCards();
-    }
-
-    private void initGame()
-    {
-
-        /*
-        StartCoroutine(waiting());
-        try
-        {
-            player_hand.GetComponent<PlayerController>().loadDeck();
-            player_hand.GetComponent<PlayerController>().ShuffleDeck();
-            player_hand.GetComponent<PlayerController>().drawCard(3);
-            enemy_hand.GetComponent<PlayerController>().loadDeck();
-            enemy_hand.GetComponent<PlayerController>().ShuffleDeck();
-            enemy_hand.GetComponent<PlayerController>().drawCard(3);
-          //  enemy_hand.GetComponent<PlayerController>().drawCard(4);
-            Debug.Log("drawing");
-        }
-        catch (System.Exception e)
-        {
-            Debug.Log(e);
-            throw;
-        }*/
-    }
-
     public void setPlayersOder()
     {
         // TODO
     }
-
 
     private void startPlayerTurn()
     {
@@ -250,6 +228,35 @@ public class BattleController : NetworkBehaviour
         }
     }
 
+    [Command(ignoreAuthority = true)]
+    public void CmdEndTurn()
+    {
+        RpcSetTurn();
+    }
+
+    [ClientRpc]
+    public void RpcSetTurn()
+    {
+        isOurTurn = !isOurTurn;
+        Debug.Log("isOurTurn:  ----   " + isOurTurn);
+        turn_button.gameObject.SetActive(isOurTurn);
+        if(isOurTurn)
+        {   
+            //  playerController = My_PlayerController.localPlayer;
+            // playerController.CmdDrawCard(1);
+            NetworkIdentity netID = NetworkClient.connection.identity;
+            My_PlayerController p = netID.GetComponent<My_PlayerController>();
+            p.CmdDrawCard(1);
+        }
+    }
+
+    public static My_PlayerController getIdentity()
+    {
+        NetworkIdentity netID = NetworkClient.connection.identity;
+        return netID.GetComponent<My_PlayerController>();
+
+    }
+
     public void finishTurn()
     {
         foreach (GameObject item in playerField)
@@ -284,23 +291,150 @@ public class BattleController : NetworkBehaviour
         gameMessage.SetActive(false);
     }
 
-    public void attackToUnit()
+
+    [Command(ignoreAuthority = true)]
+    public void CmdUpdateAttacker(int x, int y)
     {
-        playerField[selectedAttacker[0], selectedAttacker[1]].GetComponent<CardView>().cCard.hp -= enemyField[selectedDefender[0], selectedDefender[1]].GetComponent<CardView>().cCard.attack;
-        enemyField[selectedDefender[0], selectedDefender[1]].GetComponent<CardView>().cCard.hp -= playerField[selectedAttacker[0], selectedAttacker[1]].GetComponent<CardView>().cCard.attack;
+        CurrentAttackerX = x;
+        CurrentAttackerY = y;
 
-        playerField[selectedAttacker[0], selectedAttacker[1]].GetComponent<CardView>().cCard.isDefending = false;
-        playerField[selectedAttacker[0], selectedAttacker[1]].GetComponent<CardView>().attacks_number -= 1;
-        playerField[selectedAttacker[0], selectedAttacker[1]].GetComponent<CardView>().updateCard();
-        enemyField[selectedDefender[0], selectedDefender[1]].GetComponent<CardView>().updateCard();
-
-        selectedDefender = new int[0];
-        selectedAttacker = new int[0];
+        currentAction = "attacking";
+        targetType = "enemy";
     }
 
-    public void sendToGraveyard(int[] card_pos, string player)
+    [Command(ignoreAuthority = true)]
+    public void CmdPrepareSpell(int x, int y, bool myCard, List<string> skill)
     {
-        if(player == "player")
+        RpcCastSpell(x, y, myCard, skill);
+        //spellcard.GetComponent<CardView>().discard();
+        playerGraveyard.Add(spellcard.GetComponent<CardView>().cCard);
+        Destroy(spellcard, 0.3f);
+    }
+
+    public void discard()
+    {
+        NetworkIdentity netID = NetworkClient.connection.identity;
+        My_PlayerController p = netID.GetComponent<My_PlayerController>();
+        if (p.spellcardGO)
+        {
+            p.spellcardGO.GetComponent<CardView>().discard();
+        }
+    }
+
+    [ClientRpc]
+    public void RpcCastSpell(int x, int y, bool myCard, List<string> skill)
+    {
+        if(isOurTurn)
+        {
+            foreach (var effect in skill)
+            {
+                string[] effects = effect.Split('+');
+                string ability = effects[1];
+                string qty = effects[2];
+                string type = effects[3];
+                string conditional = effects[4];
+                string animation = effects[5];
+
+                switch (ability)
+                {
+                    case "damage": 
+                        if(myCard) {
+                            playerField[x, y].GetComponent<CardView>().hp -= int.Parse(qty);
+                            playerField[x, y].GetComponent<CardView>().updateCard();
+                        }
+                        else
+                        {
+                            enemyField[x, y].GetComponent<CardView>().hp -= int.Parse(qty);
+                            enemyField[x, y].GetComponent<CardView>().updateCard();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        } else
+        {
+            foreach (var effect in skill)
+            {
+                string[] effects = effect.Split('+');
+                string ability = effects[1];
+                string qty = effects[2];
+                string type = effects[3];
+                string conditional = effects[4];
+                string animation = effects[5];
+
+                switch (ability)
+                {
+                    case "damage":
+                        if (!myCard)
+                        {
+                            playerField[x, y].GetComponent<CardView>().hp -= int.Parse(qty);
+                            playerField[x, y].GetComponent<CardView>().updateCard();
+                        }
+                        else
+                        {
+                            enemyField[x, y].GetComponent<CardView>().hp -= int.Parse(qty);
+                            enemyField[x, y].GetComponent<CardView>().updateCard();
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+        }
+    }
+
+    [Command(ignoreAuthority = true)]
+    public void CmdAttackToUnit(int targetX,int targetY)
+    {
+        Debug.Log("****** cmd attack");
+        Debug.Log(CurrentTargetX + "," + CurrentTargetY);
+        RpcAttackToUnit(CurrentAttackerX, CurrentAttackerY, targetX, targetY);
+    }
+
+    [ClientRpc]
+    public void RpcAttackToUnit(int CurrentAttackerX2,int CurrentAttackerY2, int CurrentTargetX2, int CurrentTargetY2)
+    {
+        Debug.Log(CurrentAttackerX + "," + CurrentAttackerY + " / " + CurrentTargetX + "," + CurrentTargetY);
+        Debug.Log(CurrentAttackerX2 + "," + CurrentAttackerY2 + " / " + CurrentTargetX2 + "," + CurrentTargetY2);
+
+        if (isOurTurn)
+        {
+            Debug.Log("attacking");
+            Debug.Log(CurrentAttackerX2 + "," + CurrentAttackerY2 + " / " + CurrentTargetX2 + "," + CurrentTargetY2);
+
+            enemyField[CurrentTargetX2, CurrentTargetY2].GetComponent<CardView>().hp -= playerField[CurrentAttackerX2, CurrentAttackerY2].GetComponent<CardView>().cCard.attack;
+            playerField[CurrentAttackerX2, CurrentAttackerY2].GetComponent<CardView>().hp -= enemyField[CurrentTargetX2, CurrentTargetY2].GetComponent<CardView>().cCard.attack;
+
+            enemyField[CurrentTargetX2, CurrentTargetY2].GetComponent<CardView>().updateCard();
+            playerField[CurrentAttackerX2, CurrentAttackerY2].GetComponent<CardView>().updateCard();
+        } else
+        {
+            Debug.Log("attacked");
+            Debug.Log(CurrentAttackerX2 + "," + CurrentAttackerY2 + " / " + CurrentTargetX2 + "," + CurrentTargetY2);
+
+            playerField[CurrentTargetX2, CurrentTargetY2].GetComponent<CardView>().hp -= enemyField[CurrentAttackerX2, CurrentAttackerY2].GetComponent<CardView>().cCard.attack;
+            enemyField[CurrentAttackerX2, CurrentAttackerY2].GetComponent<CardView>().hp -= playerField[CurrentTargetX2, CurrentTargetY2].GetComponent<CardView>().cCard.attack;
+
+            playerField[CurrentTargetX2, CurrentTargetY2].GetComponent<CardView>().updateCard();
+            enemyField[CurrentAttackerX2, CurrentAttackerY2].GetComponent<CardView>().updateCard();
+        }
+        /*
+        CurrentAttacker.GetComponent<CardView>().cCard.hp -= CurrentTarget.GetComponent<CardView>().cCard.attack;
+        CurrentTarget.GetComponent<CardView>().cCard.hp -= CurrentAttacker.GetComponent<CardView>().cCard.attack;
+
+        CurrentAttacker.GetComponent<CardView>().cCard.isDefending = false;
+        CurrentAttacker.GetComponent<CardView>().attacks_number -= 1;*/
+
+        //CurrentAttacker = null;
+        //CurrentTarget = null;
+    }
+
+    public void sendToGraveyard(int[] card_pos, bool myCard)
+    {
+        if(myCard)
         {
             string card_name = playerField[card_pos[0], card_pos[1]].GetComponent<CardView>().cCard.cardName;
             playerField[card_pos[0], card_pos[1]].GetComponent<Draggable>().parentToReturn.GetComponent<dropZone>().hasCard = false;
@@ -311,17 +445,15 @@ public class BattleController : NetworkBehaviour
         } else
         {
             string card_name = enemyField[card_pos[0], card_pos[1]].GetComponent<CardView>().cCard.cardName;
-            enemyField[card_pos[0], card_pos[1]].GetComponent<Draggable>().parentToReturn.GetComponent<dropZone>().hasCard = false;
+          //  enemyField[card_pos[0], card_pos[1]].GetComponent<Draggable>().parentToReturn.GetComponent<dropZone>().hasCard = false;
             enemyField[card_pos[0], card_pos[1]] = null;
             Card c = Resources.Load<Card>("Resources/" + card_name);
             Card card = c;
             enemyGraveyard.Add(c);
         }   
-    }
+    }   
 
     //effecs
- 
-
     public void hideDisplayButtons()
     {
         foreach (GameObject item in playerField)
@@ -350,7 +482,7 @@ public class BattleController : NetworkBehaviour
     {
         foreach (string skill in skill_list)
         {
-           StartCoroutine(activateSkill(skill));
+         //  StartCoroutine(activateSkill(skill));
         }
     }
 
@@ -363,6 +495,8 @@ public class BattleController : NetworkBehaviour
         4.- conditional
         5.- animation
      */
+
+    /*
     public IEnumerator activateSkill(string compressed_skill)
     {
         string[] skill = compressed_skill.Split('+');
@@ -445,21 +579,19 @@ public class BattleController : NetworkBehaviour
         {
             switch (skill[1])
             {
-
                 case "damage":
                     target.GetComponent<CardView>().receiveDamage(int.Parse(skill[2]), skill[3]);
                     break;
                 default:
                     break;
             }
-
         }
         else Debug.Log("null target");
 
         target = null;
         isTargetSelected = false;
 
-    }
+    }*/
 
     public void cancelTargetEffect()
     {
@@ -476,6 +608,4 @@ public class BattleController : NetworkBehaviour
        // cards.Add(Ping);
     }
     */
-
-    
 }

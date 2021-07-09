@@ -10,22 +10,26 @@ public class Draggable : NetworkBehaviour, IBeginDragHandler, IDragHandler, IEnd
 {
     // TODO: makes another draggable for enemy
 
+    public static BattleController ctrl;
     public Transform parentToReturn = null;
     public GameObject view;
     GameObject placeholder = null;
     public string playerTurn;
     private GameObject battleCtrl;
     private bool isOnHand;
-    private bool isDraggable = true;
+    private bool isMyCard = true;
+    private CardView card;
 
     public void Start()
     {
-       //  battleCtrl = GameObject.Find("GameController");
-      //  view = GameObject.Find("CardOverviewGO");
-      //  parentToReturn = GameObject.Find("hand").transform;
-      if(!hasAuthority)
+        //  battleCtrl = GameObject.Find("GameController");
+        //  view = GameObject.Find("CardOverviewGO");
+        //  parentToReturn = GameObject.Find("hand").transform;
+        card = gameObject.GetComponent<CardView>();
+        ctrl = FindObjectOfType<BattleController>();
+        if (!hasAuthority)
         {
-            isDraggable = false;
+            isMyCard = false;
         }
     }
 
@@ -33,8 +37,9 @@ public class Draggable : NetworkBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         // Debug.Log("... bgin draging");
         isOnHand = gameObject.GetComponent<CardView>().isOnHAnd;
-        if (isOnHand == true && isOnHand == true && isDraggable)
+        if (isOnHand && isMyCard && ctrl.isOurTurn)
         {
+            
             placeholder = new GameObject();
             placeholder.transform.SetParent(this.transform.parent);
             LayoutElement le = placeholder.AddComponent<LayoutElement>();
@@ -49,13 +54,28 @@ public class Draggable : NetworkBehaviour, IBeginDragHandler, IDragHandler, IEnd
             parentToReturn = this.transform.parent;
             this.transform.SetParent(this.transform.parent.parent);
             GetComponent<CanvasGroup>().blocksRaycasts = false;
+
+            if(card.cCard.type == "spell")
+            {           
+                List<string> spell = new List<string>(card.cCard.skill);
+                Debug.Log("0 index ->" + spell[0]);
+                NetworkIdentity netID = NetworkClient.connection.identity;
+                My_PlayerController player = netID.GetComponent<My_PlayerController>();
+                player.setSpell(spell, gameObject);      
+            }
+        }
+
+        if(!isOnHand && isMyCard && ctrl.isOurTurn)
+        {
+            ctrl.CmdUpdateAttacker(card.cCard.boardPosition[0], card.cCard.boardPosition[1]);          
+            // Debug.Log(gameObject.GetComponent<CardView>().cCard.boardPosition[0] + "/" + gameObject.GetComponent<CardView>().cCard.boardPosition[1]);
         }
     }
 
+
     public void OnDrag(PointerEventData eventData)
     {
-        // Debug.Log("...draging");
-        if (isOnHand == true && isOnHand == true && isDraggable)
+        if (isOnHand == true && isMyCard && ctrl.isOurTurn)
         {
             this.transform.position = eventData.position;
         }
@@ -63,8 +83,7 @@ public class Draggable : NetworkBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
     public void OnEndDrag(PointerEventData eventData)
     {
-
-        if (isOnHand == true && isOnHand == true && isDraggable)
+        if (isOnHand == true && isMyCard && ctrl.isOurTurn)
         {
             this.transform.SetParent(parentToReturn);
             this.transform.SetSiblingIndex(placeholder.transform.GetSiblingIndex());
@@ -72,7 +91,10 @@ public class Draggable : NetworkBehaviour, IBeginDragHandler, IDragHandler, IEnd
             this.transform.localScale = new Vector3(1, 1, 1);
 
             Destroy(placeholder);
-
+        }
+        if(!isOnHand && ctrl.isOurTurn && hasAuthority)
+        {
+            Debug.Log("end dragging card my card");
         }
     }
 

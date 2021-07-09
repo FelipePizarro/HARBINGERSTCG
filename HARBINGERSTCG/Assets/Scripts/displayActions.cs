@@ -22,7 +22,7 @@ public class displayActions : MonoBehaviour, IPointerEnterHandler, IPointerExitH
             glowEffect.GetComponent<Image>().color = Color.green;
         }
         else if(!card.GetComponent<CardView>().isOnHAnd &&
-            battleCtrl.GetComponent<BattleController>().selectedAttacker.Length > 0 && 
+           // battleCtrl.GetComponent<BattleController>().selectedAttacker.Length > 0 && 
             card.GetComponent<CardView>().cCard.player == "enemy")
         {
             glowEffect.GetComponent<Image>().color = Color.red;
@@ -35,7 +35,7 @@ public class displayActions : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void DisplayActions()
     {
-
+        /*
         if (battleCtrl.GetComponent<BattleController>().listenForTarget)
         {
             battleCtrl.GetComponent<BattleController>().target = getTargetOnClick();
@@ -54,7 +54,7 @@ public class displayActions : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         else
         {
             card.GetComponent<CardView>().DisplayActions(true);
-        }
+        }*/
 
         glowEffect.SetActive(false);
     }
@@ -63,7 +63,7 @@ public class displayActions : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         if (battleCtrl.GetComponent<BattleController>().listenForTarget && !card.GetComponent<CardView>().isOnHAnd)
         {
-            switch (battleCtrl.GetComponent<BattleController>().targetType)
+            switch ("")
             {
                 case "any":
                     return gameObject;

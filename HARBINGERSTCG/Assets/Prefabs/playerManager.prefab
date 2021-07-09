@@ -82,10 +82,25 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   ctrl: {fileID: 0}
-  ctrlScript: {fileID: 0}
   cardPrefab: {fileID: 5133649916970675412, guid: e571220887d87bd4f9acd30262517405,
     type: 3}
   handCanvas: {fileID: 0}
+  enemyCanvas: {fileID: 0}
+  turnButton: {fileID: 0}
+  Logger: {fileID: 0}
   myDeck: []
   player: 
-  twoplayers: 0
+  cardList:
+  - fireball
+  - fireball
+  - old_red_mage
+  - old_red_mage
+  - old_red_mage
+  - basic_warrior
+  - basic_warrior
+  - basic_warrior
+  playerField: {fileID: 0}
+  enemyField: {fileID: 0}
+  readyToStart: 0
+  hostStarts: 0
+  firstPlayer: 0

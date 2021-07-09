@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11200c2c22f26824a92fe6aac2c0fd42, type: 3}
+  m_Name: fireball
+  m_EditorClassIdentifier: 
+  id: 0
+  exp: 0
+  level: 0
+  cardName: fire_ball
+  text: deals 6 damages
+  release: 1
+  type: spell
+  race: 
+  attack: 0
+  attack_mod: 0
+  attack_type: magic
+  attack_range: 0
+  max_hp: 0
+  hp: 0
+  onSummon: []
+  skill:
+  - any+damage+6+fire+none+none
+  tags: []
+  rank: 
+  cost: 1
+  art: fireball
+  color: red
+  sign: 
+  boardPosition: 
+  currentZone: 
+  player: 
+  isDefending: 0
+  isMyCard: 0

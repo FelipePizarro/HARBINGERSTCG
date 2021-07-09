@@ -22,6 +22,7 @@ using UnityEngine.UI;
       public  int hp;
      // public  Skill[] effects;
       public string[] onSummon;
+      public string[] skill;
       public  string[] tags;
       public  string rank;
       public int cost;
@@ -32,9 +33,10 @@ using UnityEngine.UI;
       public string currentZone;
       public string player;
       public bool isDefending;
+      public bool isMyCard;
     public Card(int id, int exp, int level, string cardName, string text, string release, string type, string race, int attack,
         int attack_mod, string attack_type, int attack_range, int max_hp, int hp, string[] tags, string rank,
-        int cost, string art, string color, string sign, string current_zone, string player, string[] onsummon)
+        int cost, string art, string color, string sign, string current_zone, string player, string[] onsummon, bool myCard, string[] skill)
         {
         this.id = id;
         this.exp = exp;
@@ -61,6 +63,8 @@ using UnityEngine.UI;
         this.player = player;
         this.onSummon = onsummon;
         isDefending = true;
+        this.isMyCard = myCard;
+        this.skill = skill;
         }
     }
 

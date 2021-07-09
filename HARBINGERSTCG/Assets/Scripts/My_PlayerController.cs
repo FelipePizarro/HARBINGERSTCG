@@ -5,30 +5,96 @@ using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.SceneManagement;
 using Mirror;
+using TMPro;
+using System;
 
 public class My_PlayerController : NetworkBehaviour
 {
-
     public GameObject ctrl;
-   // public BattleController ctrlScript;
+    [HideInInspector] 
+    public static BattleController ctrlScript;
     public GameObject cardPrefab;
     public GameObject handCanvas;
     public GameObject enemyCanvas;
+    public GameObject turnButton;
+    public GameObject Logger;
     public List<Card> myDeck = new List<Card>();
     public string player;
-    public List<string> cardList = new List<string>() { "basic_warrior", "basic_warrior", "old_red_mage", "old_red_mage", "old_red_mage", "basic_warrior", "basic_warrior", "basic_warrior" };
-    // public List<CardView> MyCards = new List<CardView>();
+    public List<string> cardList = new List<string>() {};
+    //public List<CardView> MyCards = new List<CardView>();
+        
+    public GameObject playerField;
+    public GameObject enemyField;
+    //[SyncVar]
+    //public bool isMyTurn = false;
+    [SyncVar]
+    public bool readyToStart = false;
+
+    //[SyncVar]
+    public bool hostStarts = false;
+
+    [SyncVar, HideInInspector] 
+    public bool firstPlayer = false; // Is it player 1, player 2, etc.
+    [HideInInspector] public static My_PlayerController localPlayer;
+
+    public string targetType = "";
+    public string currentAction = "";
+    public int[] target;
+
+    public List<string> skill = new List<string>();
+    public GameObject spellcardGO;
+
     void Start()
     {
-
         /*loadDeck();
          ShuffleDeck();
          // drawCard(4);*/
-        handCanvas = GameObject.Find("handPlayer");
-        enemyCanvas = GameObject.Find("handEnemy");
-        ctrl = GameObject.Find("BattleController");
+
+        ctrlScript = FindObjectOfType<BattleController>();
     }
 
+    public void setSpell(List<string> currentSpell, GameObject card)
+    {
+        Debug.Log("setSpell");
+        spellcardGO = card;
+        string[] firstSpell = currentSpell[0].Split('+');
+        targetType = firstSpell[0];
+        Debug.Log(targetType);
+        skill = currentSpell;
+        Debug.Log(skill);
+        currentAction = "spellcasting";
+        ctrlScript.CmdsetCurrentAction("spellcasting");
+        ctrlScript.CmdsetSpellGO(card);
+        Debug.Log(card.name);
+        //CmdSetSpellGO(card);
+    }
+
+    [Command(ignoreAuthority = true)]
+    public void CmdSetSpellGO(GameObject card)
+    {
+        ctrlScript.spellcard = card;
+    }
+
+    public void castSpell(int x, int y, bool myCard)
+    {
+        Debug.Log("cast spell");
+        Debug.Log(x + "/" + y);
+        Debug.Log(skill[0]);
+        Debug.Log(myCard);
+        ctrlScript.CmdPrepareSpell(x, y, myCard, skill);
+    }
+
+    public void discardSpell()
+    {
+        Debug.Log("discard");
+        GameObject.Destroy(spellcardGO);    
+    }
+
+    public void writeTextLog(String text)
+    {
+        Logger.GetComponent<TextMeshProUGUI>().text += Environment.NewLine + text;
+    }
+    
     public override void OnStartServer()
     {
         base.OnStartServer();
@@ -44,8 +110,21 @@ public class My_PlayerController : NetworkBehaviour
             ShuffleDeck();
 
             Debug.Log("player ctrller client started");
-        //    ctrl = GameObject.Find("BattleController");
-        //    ctrl.GetComponent<BattleController>().checkPlayers(gameObject);
+            ctrl = GameObject.Find("BattleController");
+            handCanvas = GameObject.Find("handPlayer");
+            enemyCanvas = GameObject.Find("handEnemy");
+            playerField = GameObject.Find("playerField");
+            enemyField = GameObject.Find("enemyField");
+            turnButton = GameObject.Find("turn_button");
+            Logger = GameObject.Find("game_logger");
+
+
+            ctrl.GetComponent<BattleController>().registerPlayers(gameObject);
+            if (hasAuthority)
+            {
+                StartCoroutine(wait4AllPlayer());
+                Debug.Log("initializing");             
+            }
 
         }
         catch (System.Exception e)
@@ -53,47 +132,161 @@ public class My_PlayerController : NetworkBehaviour
             Debug.Log(e);
             throw;
         }
+    }
 
+    void initializeTurn()
+    {
+    
+    }
+
+    public IEnumerator wait4AllPlayer()
+    {
+       while (ctrl.GetComponent<BattleController>().playerCount < 2 && !readyToStart)
+        {
+            yield return 0;
+        }
+        GameObject g = GameObject.Find("DealerButton");
+        g.GetComponent<CardDealer>().OnClick();
+        initGame();
+    }
+
+    public void initGame()
+    {    
+        initializeTurn();
+        if (isServer)
+        {
+            int rn = UnityEngine.Random.Range(1, 10);
+            if (rn < 6)
+            {
+                // host goes first
+                Debug.Log("starting game first");
+                ctrlScript.hostStarts = true;
+                ctrlScript.startGame(true);
+                
+            } else
+            {
+                // host goes second
+                ctrlScript.hostStarts = false;
+                Debug.Log("starting game second");
+                ctrlScript.startGame(false);
+            } 
+        } 
+
+        /*if(isMyTurn)
+        {
+            rpcStartTurn();
+        } else
+        {
+            rpcFinish();
+        }*/
+    }
+
+    public void checkFirstPlayerToGo()
+    {
+
+    }
+
+    public void playCard(GameObject card, int[] zone)
+    {
+        Debug.Log(zone[0] + " " + zone[1]);
+        CmdPlayCard(card, zone);
+    }
+
+    [Command]
+    void CmdPlayCard(GameObject card, int[] zone)
+    {
+        RpcSummonCard(card, zone);
+    }
+
+    [ClientRpc]
+    void RpcSummonCard(GameObject card, int[] zone)
+    {
+         if(hasAuthority)
+        { 
+            card.transform.SetParent(playerField.GetComponent<ZoneManager>().getZoneByPos(zone).transform);
+            ctrl.GetComponent<BattleController>().playerField[zone[0], zone[1]] = card;
+            card.GetComponent<CardView>().cCard.boardPosition = zone;
+            card.GetComponent<CardView>().cardTags.Add("ally");
+          //  card.GetComponent<CardView>().EnableActionButtons();
+            if (card.GetComponent<CardView>().cCard.onSummon.Length > 0)
+            {
+               // card.GetComponent<CardView>().onSummontrigger();
+            }
+        } else
+        {
+            card.transform.SetParent(enemyField.GetComponent<ZoneManager>().getZoneByPos(zone).transform);
+            ctrl.GetComponent<BattleController>().enemyField[zone[0], zone[1]] = card;
+            card.GetComponent<CardView>().cCard.boardPosition = zone;
+            card.GetComponent<CardView>().cardTags.Add("enemy");
+            card.GetComponent<CardView>().isOnHAnd = false;
+
+            //card.GetComponent<CardView>().EnableActionButtons();
+        }
+
+        card.GetComponent<cardFlipper>().FlipCard(false);
+        checkAllcards();
+         
+    }
+
+    public void checkAllcards()
+    {
+        foreach (var item in ctrl.GetComponent<BattleController>().playerField)
+        {
+            if(item)
+            {
+                Debug.Log(item.GetComponent<CardView>().cName.text);
+            }
+        }
+        foreach (var item in ctrl.GetComponent<BattleController>().enemyField)
+        {
+            if(item)
+            {
+                Debug.Log(item.GetComponent<CardView>().cName.text);
+            }
+        }
     }
 
     public void loadDeck()
     {
        foreach (string card_name in cardList)
         {
-            Card c = Resources.Load<Card>(card_name);
+            Card c = Resources.Load<Card>("cards_list/" + card_name);
             Card newCard = c;
-            Debug.Log(newCard);
+         //   Debug.Log(newCard);
             myDeck.Add(newCard);
         }
     }
 
     public void askForCards()
     {
-//        ctrl.GetComponent<BattleController>().CmddrawCard(2, isLocalPlayer);
+        CmdDrawCard(4);
     }
 
-    void addCardToHand(Card card)
-    {
 
-    }
-
-    [Command]
+    [Command(ignoreAuthority = true)]
     public void CmdDrawCard(int qty)
     {
-        for (int i = 0; i < qty; i++)
+        if (myDeck.Count != 0)
         {
-            //  addCardToHand(myDeck[0]);
-            Card card = myDeck[0];
-            Card c = new Card(card.id, card.exp, card.level, card.cardName, card.text, card.release, card.type, card.race, card.attack,
-            card.attack_mod, card.type, card.attack_range, card.max_hp, card.hp, card.tags, card.rank, card.cost, card.art,
-            card.color, card.sign, card.currentZone, this.player, card.onSummon);
+            for (int i = 0; i < qty; i++)
+            {
+                //  addCardToHand(myDeck[0]);
+                Card card = myDeck[0];
+                Card c = new Card(card.id, card.exp, card.level, card.cardName, card.text, card.release, card.type, card.race, card.attack,
+                card.attack_mod, card.type, card.attack_range, card.max_hp, card.hp, card.tags, card.rank, card.cost, card.art,
+                card.color, card.sign, card.currentZone, this.player, card.onSummon, true, card.skill);
 
-            GameObject newCard = Instantiate(cardPrefab) as GameObject;
-            //newCard.GetComponent<CardView>().LoadCard(c);
+                GameObject newCard = Instantiate(cardPrefab) as GameObject;
+                //newCard.GetComponent<CardView>().LoadCard(c);
 
-            NetworkServer.Spawn(newCard, connectionToClient);
-            RpcShowCards(newCard, c);
-            myDeck.RemoveAt(0);
+                NetworkServer.Spawn(newCard, connectionToClient);
+                RpcShowCards(newCard, c);
+                myDeck.RemoveAt(0);
+            }
+        }
+        else
+        {
+            ctrl.GetComponent<BattleController>().showMessageGame("No more cards!");
         }
     }
 
@@ -106,13 +299,15 @@ public class My_PlayerController : NetworkBehaviour
             card.transform.SetParent(handCanvas.transform, false);
             card.transform.localPosition = handCanvas.transform.localPosition;
             card.transform.localRotation = handCanvas.transform.localRotation;
+            card.GetComponent<CardView>().isMyCard = true;
+            card.GetComponent<cardFlipper>().FlipCard(false);
         }
         else
         {
             card.transform.SetParent(enemyCanvas.transform, false);
+            card.GetComponent<CardView>().isMyCard = false;
             card.transform.localPosition = handCanvas.transform.localPosition;
             card.transform.localRotation = handCanvas.transform.localRotation;
-
         }
     }
 
@@ -121,9 +316,55 @@ public class My_PlayerController : NetworkBehaviour
         for (int i = 0; i < myDeck.Count; i++)
         {
             Card temp = myDeck[i];
-            int randomIndex = Random.Range(i, myDeck.Count);
+            int randomIndex = UnityEngine.Random.Range(i, myDeck.Count);
             myDeck[i] = myDeck[randomIndex];
             myDeck[randomIndex] = temp;
         }
     }
+
+    /*
+    [Command]
+    public void cmdStartTurn()
+    {
+        isMyTurn = true;
+        writeTextLog("my turn:" + isMyTurn + " " + gameObject.tag);
+        turnButton.GetComponent<Button>().interactable = true;
+        CmdDrawCard(1);
+//        CmdDrawCard(1);
+       // Debug.Log("starting turn");
+      //  StartCoroutine(ctrl.GetComponent<BattleController>().showMessageGame("starting turn"));
+    }
+
+   // [ClientRpc]
+    public void rpcFinish()
+    {
+        isMyTurn = false;
+        writeTextLog("my turn:" + isMyTurn + " " + gameObject.tag);
+        turnButton.GetComponent<Button>().interactable = false;
+        StartCoroutine(ctrl.GetComponent<BattleController>().showMessageGame("ending turn"));
+        ctrl.GetComponent<BattleController>().changeTurn(gameObject);
+    }
+
+    public void disableTurn()
+    {
+        isMyTurn = false;
+        writeTextLog("my turn:" + isMyTurn + " " + gameObject.tag);
+        turnButton.GetComponent<Button>().interactable = false;
+    }
+
+    public void CmdChangeTurn()
+    {
+        ctrl.GetComponent<BattleController>().changeTurn(gameObject);
+        Debug.Log(gameObject.tag);
+    }
+
+    [ClientRpc]
+    public void RpcChangeTurn()
+    {
+        My_PlayerController pm = NetworkClient.connection.identity.GetComponent<My_PlayerController>();
+        pm.isMyTurn = !pm.isMyTurn;
+        // Logger.GetComponent<Text>().text = "my turn:" + isMyTurn;
+    }*/
+
+    public bool IsOurTurn() => ctrlScript.isOurTurn;
 }

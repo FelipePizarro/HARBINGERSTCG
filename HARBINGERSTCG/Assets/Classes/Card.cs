@@ -6,37 +6,42 @@ using UnityEngine.UI;
     [CreateAssetMenu(menuName = "Card")]
     public class Card: ScriptableObject
     {
-      public int id;
+      public string id;
       public int exp;
       public int level;
       public string cardName;
       public string text;
       public string release;
       public string type;
-      public  string race;
-      public  int attack;
-      public  int attack_mod;
-      public  string attack_type;
-      public  int attack_range;
-      public  int max_hp;
-      public  int hp;
+      public string race;
+      public int attack;
+      public int attack_mod;
+      public string attack_type;
+      public int attack_range;
+      public int max_hp;
+      public int hp;
      // public  Skill[] effects;
       public string[] onSummon;
       public string[] skill;
-      public  string[] tags;
-      public  string rank;
+      public string[] tags;
+      public string rank;
       public int cost;
+      public int costGreen;
+      public int costBlue;
+      public int costRed;
+      public int costYellow;
       public string art;
       public string color;
-      public string sign;
+      public string seal;
       public int[] boardPosition;
       public string currentZone;
       public string player;
       public bool isDefending;
       public bool isMyCard;
-    public Card(int id, int exp, int level, string cardName, string text, string release, string type, string race, int attack,
+    public Card(string id, int exp, int level, string cardName, string text, string release, string type, string race, int attack,
         int attack_mod, string attack_type, int attack_range, int max_hp, int hp, string[] tags, string rank,
-        int cost, string art, string color, string sign, string current_zone, string player, string[] onsummon, bool myCard, string[] skill)
+        int cost, string art, string color, string seal, string current_zone, string player, string[] onsummon, bool myCard, string[] skill,
+        int blue, int green, int yellow, int red)
         {
         this.id = id;
         this.exp = exp;
@@ -58,13 +63,17 @@ using UnityEngine.UI;
         this.cost = cost;
         this.art = art;
         this.color = color;
-        this.sign = sign;
+        this.seal = seal;
         this.currentZone = current_zone;
         this.player = player;
         this.onSummon = onsummon;
         isDefending = true;
         this.isMyCard = myCard;
         this.skill = skill;
+        this.costBlue = blue;
+        this.costGreen = green;
+        this.costRed = red;
+        this.costYellow = yellow;
         }
     }
 

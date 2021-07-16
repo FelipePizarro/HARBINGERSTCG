@@ -30,13 +30,12 @@ public class BattleController : NetworkBehaviour
     public My_PlayerController player1;
     [SyncVar]
     public My_PlayerController player2;
-
+    
     // battle ->
     public string selectedTargetPlayer;
     public bool listenForTarget = false;
     public bool isTargetSelected = false; 
     public GameObject target;
-
 
     public int playerCount = 0;
     public GameObject cardDealer;
@@ -47,7 +46,6 @@ public class BattleController : NetworkBehaviour
 
     [SyncVar]
     public SyncList<string> currentSpell = new SyncList<string>();
-
 
     public int DiceRoll = 0;
     [HideInInspector] public bool isOurTurn = false;
@@ -66,7 +64,7 @@ public class BattleController : NetworkBehaviour
     {
         base.OnStartServer();
         Debug.Log("server started");
-        loadDeck();
+     // loadDeck();
      // drawCard(3);
     }
 
@@ -247,6 +245,7 @@ public class BattleController : NetworkBehaviour
             NetworkIdentity netID = NetworkClient.connection.identity;
             My_PlayerController p = netID.GetComponent<My_PlayerController>();
             p.CmdDrawCard(1);
+            p.addMana();
         }
     }
 
@@ -309,6 +308,10 @@ public class BattleController : NetworkBehaviour
         //spellcard.GetComponent<CardView>().discard();
         playerGraveyard.Add(spellcard.GetComponent<CardView>().cCard);
         Destroy(spellcard, 0.3f);
+        // TODO null target and action ? check this
+        targetType = "";
+        currentAction = "";
+
     }
 
     public void discard()
@@ -421,15 +424,6 @@ public class BattleController : NetworkBehaviour
             playerField[CurrentTargetX2, CurrentTargetY2].GetComponent<CardView>().updateCard();
             enemyField[CurrentAttackerX2, CurrentAttackerY2].GetComponent<CardView>().updateCard();
         }
-        /*
-        CurrentAttacker.GetComponent<CardView>().cCard.hp -= CurrentTarget.GetComponent<CardView>().cCard.attack;
-        CurrentTarget.GetComponent<CardView>().cCard.hp -= CurrentAttacker.GetComponent<CardView>().cCard.attack;
-
-        CurrentAttacker.GetComponent<CardView>().cCard.isDefending = false;
-        CurrentAttacker.GetComponent<CardView>().attacks_number -= 1;*/
-
-        //CurrentAttacker = null;
-        //CurrentTarget = null;
     }
 
     public void sendToGraveyard(int[] card_pos, bool myCard)

@@ -18,7 +18,7 @@ MonoBehaviour:
   cardName: Red Mage
   text: 11123123
   release: 1
-  type: 11
+  type: creature
   race: 11
   attack: 10
   attack_mod: 0
@@ -27,13 +27,19 @@ MonoBehaviour:
   max_hp: 10
   hp: 10
   onSummon: []
+  skill: []
   tags: []
   rank: 1
-  cost: 0
+  cost: 3
+  costGreen: 0
+  costBlue: 0
+  costRed: 0
+  costYellow: 0
   art: mago
   color: blue
-  sign: enchanter
+  seal: conjurer
   boardPosition: 
   currentZone: 
   player: 
   isDefending: 0
+  isMyCard: 0

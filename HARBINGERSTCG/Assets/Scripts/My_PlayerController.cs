@@ -13,6 +13,7 @@ public class My_PlayerController : NetworkBehaviour
     public GameObject ctrl;
     [HideInInspector] 
     public static BattleController ctrlScript;
+    public static HeroView heroView;
     public GameObject cardPrefab;
     public GameObject handCanvas;
     public GameObject enemyCanvas;
@@ -30,6 +31,12 @@ public class My_PlayerController : NetworkBehaviour
     [SyncVar]
     public bool readyToStart = false;
 
+    public Card heroCard;
+    public string heroName = "basic_warrior";
+
+    // hero
+    public GameObject heroContainer;
+
     //[SyncVar]
     public bool hostStarts = false;
 
@@ -43,58 +50,13 @@ public class My_PlayerController : NetworkBehaviour
 
     public List<string> skill = new List<string>();
     public GameObject spellcardGO;
+    public Card cardToDeloy;
 
     void Start()
     {
-        /*loadDeck();
-         ShuffleDeck();
-         // drawCard(4);*/
-
         ctrlScript = FindObjectOfType<BattleController>();
     }
 
-    public void setSpell(List<string> currentSpell, GameObject card)
-    {
-        Debug.Log("setSpell");
-        spellcardGO = card;
-        string[] firstSpell = currentSpell[0].Split('+');
-        targetType = firstSpell[0];
-        Debug.Log(targetType);
-        skill = currentSpell;
-        Debug.Log(skill);
-        currentAction = "spellcasting";
-        ctrlScript.CmdsetCurrentAction("spellcasting");
-        ctrlScript.CmdsetSpellGO(card);
-        Debug.Log(card.name);
-        //CmdSetSpellGO(card);
-    }
-
-    [Command(ignoreAuthority = true)]
-    public void CmdSetSpellGO(GameObject card)
-    {
-        ctrlScript.spellcard = card;
-    }
-
-    public void castSpell(int x, int y, bool myCard)
-    {
-        Debug.Log("cast spell");
-        Debug.Log(x + "/" + y);
-        Debug.Log(skill[0]);
-        Debug.Log(myCard);
-        ctrlScript.CmdPrepareSpell(x, y, myCard, skill);
-    }
-
-    public void discardSpell()
-    {
-        Debug.Log("discard");
-        GameObject.Destroy(spellcardGO);    
-    }
-
-    public void writeTextLog(String text)
-    {
-        Logger.GetComponent<TextMeshProUGUI>().text += Environment.NewLine + text;
-    }
-    
     public override void OnStartServer()
     {
         base.OnStartServer();
@@ -117,15 +79,15 @@ public class My_PlayerController : NetworkBehaviour
             enemyField = GameObject.Find("enemyField");
             turnButton = GameObject.Find("turn_button");
             Logger = GameObject.Find("game_logger");
-
+            heroContainer = GameObject.Find("playerHeroContainer");
+            heroView = GameObject.Find("playerHeroView").GetComponent<HeroView>();
 
             ctrl.GetComponent<BattleController>().registerPlayers(gameObject);
             if (hasAuthority)
             {
                 StartCoroutine(wait4AllPlayer());
-                Debug.Log("initializing");             
+                Debug.Log("initializing");
             }
-
         }
         catch (System.Exception e)
         {
@@ -134,17 +96,62 @@ public class My_PlayerController : NetworkBehaviour
         }
     }
 
-    void initializeTurn()
+    public void setSpell(List<string> currentSpell, GameObject card)
     {
-    
+        spellcardGO = card;
+        string[] firstSpell = currentSpell[0].Split('+');
+        targetType = firstSpell[0];
+        Debug.Log(targetType);
+        skill = currentSpell;
+        Debug.Log(skill);
+        currentAction = "spellcasting";
+        ctrlScript.CmdsetCurrentAction("spellcasting");
+        ctrlScript.CmdsetSpellGO(card);
+        //CmdSetSpellGO(card);
     }
+
+    public bool hasEnoughManaToPlay(Card card)
+    {
+        cardToDeloy = card;
+        if(heroView.blue_mana < card.costBlue) { return false; }
+        if(heroView.red_mana < card.costRed) { return false; }
+        if(heroView.green_mana < card.costGreen) { return false; }
+        if(heroView.yellow_mana < card.costYellow) { return false; }
+        if(heroView.getConvertedManaPool() < card.cost) { return false; }
+
+        return true;
+    }
+
+    [Command(ignoreAuthority = true)]
+    public void CmdSetSpellGO(GameObject card)
+    {
+        ctrlScript.spellcard = card;
+    }
+
+    public void castSpell(int x, int y, bool myCard)
+    {
+        Debug.Log("cast spell");
+        Debug.Log(x + "/" + y);
+        Debug.Log(skill[0]);
+        Debug.Log(myCard);
+        ctrlScript.CmdPrepareSpell(x, y, myCard, skill);
+    }
+
+    public void writeTextLog(String text)
+    {
+        Logger.GetComponent<TextMeshProUGUI>().text += Environment.NewLine + text;
+    }
+    
+
 
     public IEnumerator wait4AllPlayer()
     {
        while (ctrl.GetComponent<BattleController>().playerCount < 2 && !readyToStart)
-        {
-            yield return 0;
-        }
+       {
+          yield return 0;
+       }
+
+        //TD
         GameObject g = GameObject.Find("DealerButton");
         g.GetComponent<CardDealer>().OnClick();
         initGame();
@@ -152,7 +159,9 @@ public class My_PlayerController : NetworkBehaviour
 
     public void initGame()
     {    
-        initializeTurn();
+        // TODO: Load deck here based on list received
+        // Load Hero and  Hero UI
+
         if (isServer)
         {
             int rn = UnityEngine.Random.Range(1, 10);
@@ -161,8 +170,7 @@ public class My_PlayerController : NetworkBehaviour
                 // host goes first
                 Debug.Log("starting game first");
                 ctrlScript.hostStarts = true;
-                ctrlScript.startGame(true);
-                
+                ctrlScript.startGame(true);            
             } else
             {
                 // host goes second
@@ -170,7 +178,9 @@ public class My_PlayerController : NetworkBehaviour
                 Debug.Log("starting game second");
                 ctrlScript.startGame(false);
             } 
-        } 
+        }
+
+        LoadHero();
 
         /*if(isMyTurn)
         {
@@ -179,6 +189,12 @@ public class My_PlayerController : NetworkBehaviour
         {
             rpcFinish();
         }*/
+    }
+
+    public void LoadHero()
+    {
+        Card heroCard = Resources.Load<Card>("cards_list/" + heroName);
+        heroView.loadHero(heroCard); 
     }
 
     public void checkFirstPlayerToGo()
@@ -190,6 +206,7 @@ public class My_PlayerController : NetworkBehaviour
     {
         Debug.Log(zone[0] + " " + zone[1]);
         CmdPlayCard(card, zone);
+        heroView.spendMana(card.GetComponent<CardView>().cCard);
     }
 
     [Command]
@@ -274,11 +291,12 @@ public class My_PlayerController : NetworkBehaviour
                 Card card = myDeck[0];
                 Card c = new Card(card.id, card.exp, card.level, card.cardName, card.text, card.release, card.type, card.race, card.attack,
                 card.attack_mod, card.type, card.attack_range, card.max_hp, card.hp, card.tags, card.rank, card.cost, card.art,
-                card.color, card.sign, card.currentZone, this.player, card.onSummon, true, card.skill);
+                card.color, card.seal, card.currentZone, this.player, card.onSummon, true, card.skill, card.costBlue, card.costGreen, 
+                card.costYellow, card.costRed);
 
                 GameObject newCard = Instantiate(cardPrefab) as GameObject;
                 //newCard.GetComponent<CardView>().LoadCard(c);
-
+                  
                 NetworkServer.Spawn(newCard, connectionToClient);
                 RpcShowCards(newCard, c);
                 myDeck.RemoveAt(0);
@@ -321,6 +339,18 @@ public class My_PlayerController : NetworkBehaviour
             myDeck[randomIndex] = temp;
         }
     }
+
+    public void addMana()
+    {
+        heroView.addMana("white", 2);
+    }
+
+    public void restoreAllMana()
+    {
+        heroView.restoreAllMana();
+    }
+    
+
 
     /*
     [Command]

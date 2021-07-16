@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.EventSystems;
 using Mirror;
+using TMPro;
 
 public class CardView : NetworkBehaviour, IPointerClickHandler, IDropHandler
 {
@@ -38,6 +39,12 @@ public class CardView : NetworkBehaviour, IPointerClickHandler, IDropHandler
     public List<string> cardTags = new List<string>();
     public int[] boardPos;
 
+    //mana cost
+    public TextMeshProUGUI white_mana_cost;
+    public TextMeshProUGUI red_mana_cost;
+    public TextMeshProUGUI blue_mana_cost;
+    public TextMeshProUGUI green_mana_cost;
+    public TextMeshProUGUI yellow_mana_cost;
 
     // Start is called before the first frame update
     void Start()
@@ -68,9 +75,35 @@ public class CardView : NetworkBehaviour, IPointerClickHandler, IDropHandler
             cSkill.text = card.text;
             hp = card.max_hp;
             cHealth.text = hp + " / " + card.max_hp.ToString();
-            cCost.text = card.cost.ToString();
             cAttack.text = card.attack.ToString();
             player = card.player;
+
+            white_mana_cost.text = card.cost + "";
+            red_mana_cost.text = card.costRed + "";
+            blue_mana_cost.text = card.costBlue + "";
+            green_mana_cost.text = card.costGreen + "";
+            yellow_mana_cost.text = card.costYellow + "";
+
+            if (card.cost == 0)
+            {
+                white_mana_cost.transform.parent.gameObject.SetActive(false);
+            }
+            if(card.costRed == 0)
+            {
+                red_mana_cost.transform.parent.gameObject.SetActive(false);
+            }
+            if(card.costYellow == 0)
+            {
+                yellow_mana_cost.transform.parent.gameObject.SetActive(false);
+            }
+            if(card.costGreen == 0)
+            {
+                green_mana_cost.transform.parent.gameObject.SetActive(false);
+            }
+            if(card.costBlue == 0)
+            {
+                blue_mana_cost.transform.parent.gameObject.SetActive(false);
+            }
         }
     }
     

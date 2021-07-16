@@ -32,10 +32,8 @@ public class dropZone : NetworkBehaviour, IDropHandler, IPointerEnterHandler, IP
         // Debug.Log(d.gameObject.GetComponent<CardView>().cName.text);
 
         if (d != null && 
-            d.GetComponent<CardView>().isOnHAnd && 
             !hasCard && 
-            ctrl.isOurTurn &&
-            d.GetComponent<CardView>().isMyCard &&
+            d.GetComponent<Draggable>().canBePLayedFromHand() &&
             d.GetComponent<CardView>().cCard.type != "spell"
             )
         {
@@ -57,10 +55,8 @@ public class dropZone : NetworkBehaviour, IDropHandler, IPointerEnterHandler, IP
 
         }
         if (d != null &&
-            d.GetComponent<CardView>().isOnHAnd &&
+            d.GetComponent<Draggable>().canBePLayedFromHand() &&
             !hasCard &&
-            ctrl.isOurTurn &&
-            d.GetComponent<CardView>().isMyCard &&
             d.GetComponent<CardView>().cCard.type == "spell")
         {
             // ex: summon thing on empty space

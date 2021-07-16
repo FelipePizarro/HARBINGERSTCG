@@ -31,10 +31,14 @@ MonoBehaviour:
   - any+damage+6+fire+none+none
   tags: []
   rank: 
-  cost: 1
+  cost: 4
+  costGreen: 0
+  costBlue: 0
+  costRed: 1
+  costYellow: 0
   art: fireball
   color: red
-  sign: 
+  seal: 
   boardPosition: 
   currentZone: 
   player: 

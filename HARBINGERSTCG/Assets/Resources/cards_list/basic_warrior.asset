@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: basic_warrior
   m_EditorClassIdentifier: 
   id: 0
-  exp: 0
-  level: 0
+  exp: 20
+  level: 1
   cardName: warrior
-  text: war
+  text: a simple warrior
   release: 1
-  type: 2
-  race: 12
+  type: creature
+  race: human
   attack: 3
   attack_mod: 1
   attack_type: ph
@@ -28,13 +28,19 @@ MonoBehaviour:
   hp: 12
   onSummon:
   - enemy+damage+5+null+null+null
+  skill: []
   tags: []
   rank: 2
-  cost: 3
+  cost: 1
+  costGreen: 0
+  costBlue: 0
+  costRed: 1
+  costYellow: 0
   art: warrior
   color: red
-  sign: battler
+  seal: battler
   boardPosition: 
   currentZone: 
   player: 
   isDefending: 0
+  isMyCard: 0
